@@ -1,0 +1,77 @@
+
+### HELP ###
+HELP.md
+
+### Maven ###
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### Gradle ###
+.gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### Spring Boot / Configuration ###
+application-local.properties
+application-dev.properties
+application-prod.properties
+application-local.yml
+application-dev.yml
+application-prod.yml
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Private keys and certificates
+*.pem
+*.key
+*.p12
+*.jks
+
+### Logs ###
+*.log
+logs/
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### Eclipse / STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### OS generated files ###
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+### Temporary files ###
+*.tmp
+*.swp
+*.bak
+
+
+
+/src/main/resources/application.properties
