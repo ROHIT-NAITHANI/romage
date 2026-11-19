@@ -2,49 +2,37 @@ package romage.backend.security;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 import romage.backend.entities.User;
 import romage.backend.repository.UserRepository;
+import romage.backend.service.UserService;
 
 
-@Getter
+
 @Service
 @RequiredArgsConstructor
-public class CustomOidcUserService extends OidcUserService {
+public class CustomOidcUserService implements OAuth2UserService<OidcUserRequest,OidcUser> {
 
-    private final UserRepository userRepository;
+    private final OidcUserService oidcUserService = new OidcUserService();
+
+    private final UserService userService;
+
 
     @Override
-    public OidcUser loadUser(OidcUserRequest userRequest)
-            throws OAuth2AuthenticationException {
+    public @Nullable OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
+       OidcUser oidcUser = oidcUserService.loadUser(userRequest);
 
-        OidcUser oidcUser = super.loadUser(userRequest);
+       String provider = userRequest.getClientRegistration().getRegistrationId();
 
-        String email = oidcUser.getEmail();
-        String name = oidcUser.getFullName();
+       userService.registerOrUpdate(provider,oidcUser);
 
-        if (email == null || !Boolean.TRUE.equals(
-                oidcUser.getClaimAsBoolean("email_verified"))) {
-            throw new OAuth2AuthenticationException(
-                    new OAuth2Error("invalid_user_info"),
-                    "Google email is missing or not verified"
-            );
-        }
-
-        userRepository.findByEmail(email)
-                .orElseGet(() -> {
-                    User user = new User();
-                    user.setEmail(email);
-                    user.setName(name);
-
-                    return userRepository.save(user);
-                });
-
-        return oidcUser;
+       return oidcUser;
     }
 }

@@ -23,6 +23,11 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column
+    private String providerSubject;
+
+    @Column
+    private String provider;
 
     @Column(nullable = true)
     private String password;
