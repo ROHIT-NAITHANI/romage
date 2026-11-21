@@ -1,5 +1,6 @@
 package romage.backend.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,8 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public User registerOrUpdate(String provider , OidcUser oidcUser){
+    @Transactional
+    public void registerOrUpdate(String provider , OidcUser oidcUser){
 
         String providerSubject = oidcUser.getSubject();
         String name = oidcUser.getClaimAsString("name");
@@ -25,9 +27,7 @@ public class UserService {
             User user = existingUser.get();
             user.setName(name);
             user.setEmail(email);
-
-            return user;
-
+            return;
         }
 
         User newUser = new User();
@@ -35,11 +35,7 @@ public class UserService {
         newUser.setEmail(email);
         newUser.setProvider(provider);
         newUser.setProviderSubject(providerSubject);
-
-        return userRepository.save(newUser);
-
-
-
+        userRepository.save(newUser);
     }
 
     public  Optional<User> findByProviderAndSubject(String provider, String subject){

@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.util.UUID;
 import jakarta.persistence.*;
+import romage.backend.enums.HotelRole;
 
 @Getter
 @Setter
@@ -35,5 +36,5 @@ public class HotelMembership {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private HotelRole hotelRole;
 }

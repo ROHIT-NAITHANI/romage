@@ -1,11 +1,11 @@
 package romage.backend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import romage.backend.enums.PlatformRole;
+
 import java.util.UUID;
-import jakarta.persistence.*;
 
 @Getter
 @Setter
@@ -23,13 +23,13 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column
     private String providerSubject;
 
-    @Column
     private String provider;
 
-    @Column(nullable = true)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PlatformRole platformRole = PlatformRole.USER;
 }
