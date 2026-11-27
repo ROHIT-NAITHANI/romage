@@ -14,7 +14,7 @@ export default function Home() {
           Sign in to manage your Romage account and hotels.
         </p>
         <Link
-          href="/login"
+          href="/auth/login"
           className="mt-8 inline-flex rounded-lg bg-black px-5 py-3 text-sm font-medium text-white hover:bg-gray-800"
         >
           Sign in
